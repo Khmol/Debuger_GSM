@@ -61,7 +61,7 @@ class Conf_Debuger_GSM(object):
         self.READ_BYTES = 100    #количество байт для чтения
         self.OK_ANSWER = bytearray('OK'.encode('latin-1')) #OK
         self.MAX_WAIT_BYTES = 200    #максимальное количество байт в буфере порта на прием
-        self.NUMBER_SCAN_PORTS = 5  #количество портов для сканирования
+        self.NUMBER_SCAN_PORTS = 40  #количество портов для сканирования
         self.SET = 1
         self.IN_NUMBER = ['1', '2', '3', '4', '5']  # входы
         self.RESET_GUARD_NUMBER = ['1', '2']      # команды снятия с охраны

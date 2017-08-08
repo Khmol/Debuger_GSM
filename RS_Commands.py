@@ -142,9 +142,9 @@ class RS_Commands(object):
             # данные в формате str
             self.DATA_TX = bytearray(b'')
             for d in data:
-              self.DATA_TX += ord(d).to_bytes(1,'big')
+              self.DATA_TX += ord(d).to_bytes(1,'little')
         elif isinstance(data, int):
-            self.DATA_TX = data.to_bytes(1,'big')
+            self.DATA_TX = data.to_bytes(1,'little')
         else:
             # данные в другом формате
             return ['Error_Tx']
@@ -308,7 +308,7 @@ class RS_Commands(object):
     def Send_Min_Balance_SMS_Write(self, data):
         self.ID1_TX = self.app.ID1["SETUP_GSM_REQ"]
         self.ID2_TX = self.app.ID2["MIN_BALANCE_SMS_WRITE"]
-        self.DATA_TX = data.to_bytes(2,'big')
+        self.DATA_TX = data.to_bytes(2,'little')
         self.Transmit_RS_Data() #передаем данные в порт
         return ['Ok']
 

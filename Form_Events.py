@@ -291,8 +291,8 @@ class Form_Events(object):
         '''
         #включаем все элементы вкладки Абоненты
         self.Enable_Widget_User_Page()
-        data = self.app.ui.list_users_nom.currentRow().to_bytes(1,'big')
-        data += self.app.ui.spinBox_sim900_user_timeout.value().to_bytes(2,'big')
+        data = self.app.ui.list_users_nom.currentRow().to_bytes(1,'little')
+        data += self.app.ui.spinBox_sim900_user_timeout.value().to_bytes(2,'little')
         # отправляем SIM900_USER_TIMEOUT_WRITE
         if self.app.rs.Send_Command(  self.app.ID2["SIM900_USER_TIMEOUT_WRITE"],
                                   self.app.ID1["SETUP_GSM_REQ"],
@@ -406,7 +406,7 @@ class Form_Events(object):
                                   self.app.ID1["SETUP_GSM_REQ"],
                                   self.app.ID2["MIN_BALANCE_SMS_WRITE"],
                                   self.app.rs.TIME_TO_RX,
-                                  self.app.ui.spinBox_min_balance_SMS.value().to_bytes(2,'big')) == ['Ok']:
+                                  self.app.ui.spinBox_min_balance_SMS.value().to_bytes(2,'little')) == ['Ok']:
             return ['Ok']
         else:
             return ['Error']
@@ -446,7 +446,7 @@ class Form_Events(object):
         if isinstance(data, int):
             return (data >> bit_num) & 1
         elif isinstance(data, bytearray) or isinstance(data, bytes):
-            return (int.from_bytes(data, byteorder='big') >> bit_num) & 1
+            return (int.from_bytes(data, byteorder='little') >> bit_num) & 1
         else:
             return None
 
@@ -466,8 +466,8 @@ class Form_Events(object):
             return ( data | (1 << bit_num))
         elif isinstance(data, bytearray) or isinstance(data, bytes):
             data_len = len(data)
-            data = int.from_bytes(data, byteorder='big') | (1 << bit_num)
-            return data.to_bytes(data_len,'big')
+            data = int.from_bytes(data, byteorder='little') | (1 << bit_num)
+            return data.to_bytes(data_len,'little')
         else:
             return None
 
@@ -493,13 +493,13 @@ class Form_Events(object):
             return (data & mask)
         elif isinstance(data, bytearray) or isinstance( data, bytes ):
             data_len = len(data)
-            data = int.from_bytes(data, byteorder='big')
+            data = int.from_bytes(data, byteorder='little')
             len_data_bin = len(bin(data))-2
             for i in range(len_data_bin):
                 mask = (mask << 1)
                 mask += 1
             mask = mask ^ ( 1 << bit_num)
-            return (data & mask).to_bytes(data_len,'big')
+            return (data & mask).to_bytes(data_len,'little')
         else:
             return None
 
@@ -512,32 +512,32 @@ class Form_Events(object):
         '''
         try:
             # Установка на охрану по звонку без донабора защитного кода
-            if self.Check_Bit(data[3],1):
+            if self.Check_Bit(data[0],1):
                 self.app.ui.checkBox_let_set_guard_no_nom.setChecked(1)
             else:
                 self.app.ui.checkBox_let_set_guard_no_nom.setChecked(0)
             # Установка на охрану по звонку с донабором защитного кода
-            if self.Check_Bit(data[3],2):
+            if self.Check_Bit(data[0],2):
                 self.app.ui.checkBox_let_set_guard_nom.setChecked(1)
             else:
                 self.app.ui.checkBox_let_set_guard_nom.setChecked(0)
             # Передавать СМС уведомление о постановке на охрану тому, кто поставил на охрану
-            if self.Check_Bit(data[3],3):
+            if self.Check_Bit(data[0],3):
                 self.app.ui.checkBox_rep_sms_self.setChecked(1)
             else:
                 self.app.ui.checkBox_rep_sms_self.setChecked(0)
             # Обратный звонок как уведомление о постановке на охрану тому, кто поставил на охрану
-            if self.Check_Bit(data[3],4):
+            if self.Check_Bit(data[0],4):
                 self.app.ui.checkBox_rep_call_back_self.setChecked(1)
             else:
                 self.app.ui.checkBox_rep_call_back_self.setChecked(0)
             # Отправлять СМС даже при низком балансе
-            if self.Check_Bit(data[3],5):
+            if self.Check_Bit(data[0],5):
                 self.app.ui.checkBox_send_sms_always.setChecked(1)
             else:
                 self.app.ui.checkBox_send_sms_always.setChecked(0)
             # Обратный звонок даже при низком балансе
-            if self.Check_Bit(data[3],6):
+            if self.Check_Bit(data[0],6):
                 self.app.ui.checkBox_call_back_always.setChecked(1)
             else:
                 self.app.ui.checkBox_call_back_always.setChecked(0)

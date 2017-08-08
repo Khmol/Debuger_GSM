@@ -57,7 +57,8 @@ class Debuger_GSM(QtWidgets.QMainWindow, Conf_Debuger_GSM):
                     if self.status_new == self.ID2["SIM900_USER_TIMEOUT_READ"] and id2 == self.ID2["SIM900_USER_TIMEOUT_READ"]\
                             or self.status_new == self.ID2["SIM900_USER_TIMEOUT_WRITE"] and id2 == self.ID2["SIM900_USER_TIMEOUT_WRITE"]:
                         # выводим полученные данные в окно вывода
-                        self.ui.spinBox_sim900_user_timeout.setValue(int.from_bytes(bin_data, byteorder='big'))
+                        tmp = int.from_bytes(bin_data, byteorder='little')
+                        self.ui.spinBox_sim900_user_timeout.setValue(tmp)
                         return ['Ok']
                     elif self.status_new == self.ID2["SIM900_USER_PHONE_NUMBER_READ"] and id2 == self.ID2["SIM900_USER_PHONE_NUMBER_READ"]\
                             or self.status_new == self.ID2["SIM900_USER_PHONE_NUMBER_WRITE"] and id2 == self.ID2["SIM900_USER_PHONE_NUMBER_WRITE"]:
@@ -69,7 +70,7 @@ class Debuger_GSM(QtWidgets.QMainWindow, Conf_Debuger_GSM):
                         # выводим полученные данные в окно вывода
                         self.user_bit_num = Convert_To_User_Num(self.ui.list_users_nom.currentRow(), self.NUM_ABONENTS)
                         self.conf_alarm_call_flags = bin_data   # переменная текущего значения флагов CONF_ALARM_CALL
-                        if self.event.Check_Bit(bin_data, self.user_bit_num):
+                        if self.event.Check_Bit(bytearray(reversed(bin_data)), self.user_bit_num):
                             self.ui.checkBox_call_back_alarm.setChecked(1)
                         else:
                             self.ui.checkBox_call_back_alarm.setChecked(0)
@@ -79,7 +80,7 @@ class Debuger_GSM(QtWidgets.QMainWindow, Conf_Debuger_GSM):
                         # выводим полученные данные в окно вывода
                         self.user_bit_num = Convert_To_User_Num(self.ui.list_users_nom.currentRow(), self.NUM_ABONENTS)
                         self.conf_alarm_sms_flags = bin_data   # переменная текущего значения флагов CONF_ALARM_SMS
-                        if self.event.Check_Bit(bin_data, self.user_bit_num):
+                        if self.event.Check_Bit(bytearray(reversed(bin_data)), self.user_bit_num):
                             self.ui.checkBox_SMS_alarm.setChecked(1)
                         else:
                             self.ui.checkBox_SMS_alarm.setChecked(0)
@@ -89,7 +90,7 @@ class Debuger_GSM(QtWidgets.QMainWindow, Conf_Debuger_GSM):
                         # выводим полученные данные в окно вывода
                         self.user_bit_num = Convert_To_User_Num(self.ui.list_users_nom.currentRow(), self.NUM_ABONENTS)
                         self.sms_set_guard_flags = bin_data   # переменная текущего значения флагов CONF_ALARM_SMS
-                        if self.event.Check_Bit(bin_data, self.user_bit_num):
+                        if self.event.Check_Bit(bytearray(reversed(bin_data)), self.user_bit_num):
                             self.ui.checkBox_SMS_set_guard.setChecked(1)
                         else:
                             self.ui.checkBox_SMS_set_guard.setChecked(0)
@@ -136,14 +137,14 @@ class Debuger_GSM(QtWidgets.QMainWindow, Conf_Debuger_GSM):
                         # проверка дины полученных данных
                         if len(bin_data) == 2:
                             #обновляем значение в окне вывода
-                            self.ui.spinBox_min_balance_SMS.setValue(int.from_bytes(bin_data, byteorder='big'))
+                            self.ui.spinBox_min_balance_SMS.setValue(int.from_bytes(bin_data, byteorder='little'))
                             return ['Ok']
                     elif    (self.status_new == self.ID2["MIN_BALANCE_CALL_READ"] and id2 == self.ID2["MIN_BALANCE_CALL_READ"])\
                             or (self.status_new == self.ID2["MIN_BALANCE_CALL_WRITE"] and id2 == self.ID2["MIN_BALANCE_CALL_WRITE"]):
                         # проверка дины полученных данных
                         if len(bin_data) == 2:
                             #обновляем значение в окне вывода
-                            self.ui.spinBox_min_balance_call.setValue(int.from_bytes(bin_data, byteorder='big'))
+                            self.ui.spinBox_min_balance_call.setValue(int.from_bytes(bin_data, byteorder='little'))
                             return ['Ok']
                     elif    (self.status_new == self.ID2["GSM_SETUP_U_READ"] and id2 == self.ID2["GSM_SETUP_U_READ"])\
                             or (self.status_new == self.ID2["GSM_SETUP_U_WRITE"] and id2 == self.ID2["GSM_SETUP_U_WRITE"]):
@@ -229,7 +230,7 @@ class Debuger_GSM(QtWidgets.QMainWindow, Conf_Debuger_GSM):
                                                                    self.ID1["SETUP_GSM_REQ"],
                                                                    self.ID2["SIM900_USER_PHONE_NUMBER_READ"],
                                                                    self.rs.TIME_TO_RX,
-                                                                   self.ui.list_users_nom.currentRow().to_bytes(1,'big'))
+                                                                   self.ui.list_users_nom.currentRow().to_bytes(1,'little'))
                 elif self.status_new == self.ID2["SIM900_USER_PHONE_NUMBER_READ"]:
                     self.result_analyze = self.rs.Send_Command(    self.ID2["CONF_ALARM_CALL_READ"],
                                                                    self.ID1["SETUP_GSM_REQ"],
@@ -266,7 +267,7 @@ class Debuger_GSM(QtWidgets.QMainWindow, Conf_Debuger_GSM):
                                 if ((int(t)) >= 0):
                                     continue
                             data_all = bytearray(b'')
-                            data_all += self.ui.list_users_nom.currentRow().to_bytes(1,'big') + \
+                            data_all += self.ui.list_users_nom.currentRow().to_bytes(1,'little') + \
                                         Convert_Str_to_Bytearray(text)
                             # отправляем запрос SIM900_USER_PHONE_NUMBER_WRITE
                             self.result_analyze = self.rs.Send_Command(self.ID2["SIM900_USER_PHONE_NUMBER_WRITE"],
@@ -281,7 +282,7 @@ class Debuger_GSM(QtWidgets.QMainWindow, Conf_Debuger_GSM):
                         self.conf_alarm_call_flags = self.event.Set_Bit(self.conf_alarm_call_flags, self.user_bit_num)
                     else:
                         self.conf_alarm_call_flags = self.event.Reset_Bit(self.conf_alarm_call_flags, self.user_bit_num)
-                    # data_all = self.ui.list_users_nom.currentRow().to_bytes(1,'big')
+                    # data_all = self.ui.list_users_nom.currentRow().to_bytes(1,'little')
                     self.result_analyze = self.rs.Send_Command(self.ID2["CONF_ALARM_CALL_WRITE"],
                                                                self.ID1["SETUP_GSM_REQ"],
                                                                self.ID2["CONF_ALARM_CALL_WRITE"],
@@ -350,7 +351,7 @@ class Debuger_GSM(QtWidgets.QMainWindow, Conf_Debuger_GSM):
                                                                    self.ui.lineEdit_clear_alarm_text.text())
                 elif self.status_new == self.ID2["CLEAR_ALARM_TEXT_WRITE"]:
                     data_all = bytearray(b'')
-                    data_all += self.ui.comboBox_Reset_Guard.currentIndex().to_bytes(1,'big') + \
+                    data_all += self.ui.comboBox_Reset_Guard.currentIndex().to_bytes(1,'little') + \
                                 Convert_Str_to_Bytearray(self.ui.lineEdit_sms_reset_guard_cmd.text())
                     self.result_analyze = self.rs.Send_Command(   self.ID2["SMS_RESET_GUARD_CMD_WRITE"],
                                                                    self.ID1["SETUP_GSM_REQ"],
@@ -359,7 +360,7 @@ class Debuger_GSM(QtWidgets.QMainWindow, Conf_Debuger_GSM):
                                                                    data_all)
                 elif self.status_new == self.ID2["SMS_RESET_GUARD_CMD_WRITE"]:
                     data_all = bytearray(b'')
-                    data_all += self.ui.comboBox_Set_Guard.currentIndex().to_bytes(1,'big') + \
+                    data_all += self.ui.comboBox_Set_Guard.currentIndex().to_bytes(1,'little') + \
                                 Convert_Str_to_Bytearray(self.ui.lineEdit_sms_Set_Guard_Cmd.text())
                     self.result_analyze = self.rs.Send_Command(   self.ID2["SMS_SET_GUARD_CMD_WRITE"],
                                                                    self.ID1["SETUP_GSM_REQ"],
@@ -426,13 +427,13 @@ class Debuger_GSM(QtWidgets.QMainWindow, Conf_Debuger_GSM):
                                                                    self.ID1["SETUP_GSM_REQ"],
                                                                    self.ID2["MIN_BALANCE_CALL_WRITE"],
                                                                    self.rs.TIME_TO_RX,
-                                                                   self.ui.spinBox_min_balance_call.value().to_bytes(2,'big'))
+                                                                   self.ui.spinBox_min_balance_call.value().to_bytes(2,'little'))
                 elif self.status_new == self.ID2["MIN_BALANCE_CALL_WRITE"]:
                     self.result_analyze = self.rs.Send_Command(    self.ID2["GSM_SETUP_U_WRITE"],
                                                                    self.ID1["SETUP_GSM_REQ"],
                                                                    self.ID2["GSM_SETUP_U_WRITE"],
                                                                    self.rs.TIME_TO_RX,
-                                                                   self.event.Read_Widget_General_Page().to_bytes(4,'big'))
+                                                                   self.event.Read_Widget_General_Page().to_bytes(4,'little'))
                 elif self.status_new == self.ID2["GSM_SETUP_U_WRITE"]:
                     self.result_analyze = self.rs.Send_Command(    self.ID2["DTMF_CLEAR_ALARM_CMD_WRITE"],
                                                                    self.ID1["SETUP_GSM_REQ"],
@@ -441,7 +442,7 @@ class Debuger_GSM(QtWidgets.QMainWindow, Conf_Debuger_GSM):
                                                                    Convert_Str_to_Bytearray(self.ui.lineEdit_dtmf_clear_alarm_cmd.text()))
                 elif self.status_new == self.ID2["DTMF_CLEAR_ALARM_CMD_WRITE"]:
                     data_all = bytearray(b'')
-                    data_all += self.ui.comboBox_dtmf_reset_guard.currentIndex().to_bytes(1,'big') + \
+                    data_all += self.ui.comboBox_dtmf_reset_guard.currentIndex().to_bytes(1,'little') + \
                                 Convert_Str_to_Bytearray(self.ui.lineEdit_dtmf_reset_guard.text())
                     self.result_analyze = self.rs.Send_Command(    self.ID2["DTMF_RESET_GUARD_CMD_WRITE"],
                                                                    self.ID1["SETUP_GSM_REQ"],
@@ -450,7 +451,7 @@ class Debuger_GSM(QtWidgets.QMainWindow, Conf_Debuger_GSM):
                                                                    data_all)
                 elif self.status_new == self.ID2["DTMF_RESET_GUARD_CMD_WRITE"]:
                     data_all = bytearray(b'')
-                    data_all += self.ui.comboBox_dtmf_set_guard.currentIndex().to_bytes(1,'big') + \
+                    data_all += self.ui.comboBox_dtmf_set_guard.currentIndex().to_bytes(1,'little') + \
                                 Convert_Str_to_Bytearray(self.ui.lineEdit_dtmf_set_guard.text())
                     self.result_analyze = self.rs.Send_Command(    self.ID2["DTMF_SET_GUARD_CMD_WRITE"],
                                                                    self.ID1["SETUP_GSM_REQ"],

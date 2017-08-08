@@ -52,13 +52,19 @@ def Parsing_Rx_Pack(data_in):
         data_to = size - 2
         for i in range(DATA_FROM, data_to):
             str_data += chr(data_in[i])
-            bin_data += data_in[i].to_bytes(1,'big')
+            bin_data += data_in[i].to_bytes(1,'little')
         # выделяем полученное CRC
         crc_rx = data_in[size - 2:]   #выделяем CRC
         crc_rx_int = int.from_bytes(crc_rx, byteorder='little') #преобразуем в int
-
+        # bin_data = bytearray(reversed(bin_data))
     return size, crc_rx_int, id1, id2, str_data, bin_data, err
 
+
+def ReverseBytearray(arr_in):
+    arr_out = bytearray()
+    for i in reversed(arr_in):
+        arr_out += i
+    return arr_out
 
 def Convert_To_User_Num(data, max_num):
     '''
@@ -80,7 +86,7 @@ def Convert_Str_to_Bytearray(text_in):
     if isinstance(text_in, str):
         bytearray_out = bytearray(b'')
         for data in text_in:
-            bytearray_out += ord(data).to_bytes(1,'big')
+            bytearray_out += ord(data).to_bytes(1,'little')
         return bytearray_out
     else:
         return None
