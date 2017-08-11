@@ -46,7 +46,7 @@ class Form_Events(object):
         for s in self.app.rs.scan_COM_ports():
             list_com_ports += s + ' '
         # установка номеров списка пользователей
-        for i in range (1,10):
+        for i in range (1,self.app.NUM_ABONENTS + 2):
             self.app.ui.list_users_nom.addItem(str(i))
         self.app.ui.list_users_nom.setCurrentRow(0) #установка 0 значения по умолчанию
 
@@ -447,7 +447,9 @@ class Form_Events(object):
         if isinstance(data, int):
             return (data >> bit_num) & 1
         elif isinstance(data, bytearray) or isinstance(data, bytes):
-            return (int.from_bytes(data, byteorder='little') >> bit_num) & 1
+            tmp = int.from_bytes(data, byteorder='little')
+            ret_val = (tmp >> bit_num) & 1
+            return ret_val
         else:
             return None
 

@@ -11,9 +11,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Debuger_GSM(object):
     def setupUi(self, Debuger_GSM):
         Debuger_GSM.setObjectName("Debuger_GSM")
-        Debuger_GSM.resize(668, 453)
-        Debuger_GSM.setMinimumSize(QtCore.QSize(370, 300))
-        Debuger_GSM.setMaximumSize(QtCore.QSize(800, 800))
+        Debuger_GSM.resize(667, 456)
+        Debuger_GSM.setMinimumSize(QtCore.QSize(667, 456))
+        Debuger_GSM.setMaximumSize(QtCore.QSize(667, 456))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("touchscreen.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Debuger_GSM.setWindowIcon(icon)
@@ -40,6 +40,8 @@ class Ui_Debuger_GSM(object):
         self.pushButton_open_COM.setObjectName("pushButton_open_COM")
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
         self.tabWidget.setGeometry(QtCore.QRect(0, 60, 661, 351))
+        self.tabWidget.setMinimumSize(QtCore.QSize(661, 351))
+        self.tabWidget.setMaximumSize(QtCore.QSize(661, 351))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tabWidget.setFont(font)
@@ -48,7 +50,7 @@ class Ui_Debuger_GSM(object):
         self.users.setObjectName("users")
         self.list_users_nom = QtWidgets.QListWidget(self.users)
         self.list_users_nom.setEnabled(False)
-        self.list_users_nom.setGeometry(QtCore.QRect(0, 0, 51, 131))
+        self.list_users_nom.setGeometry(QtCore.QRect(0, 0, 51, 151))
         font = QtGui.QFont()
         font.setPointSize(9)
         font.setBold(False)
@@ -354,7 +356,7 @@ class Ui_Debuger_GSM(object):
         self.pushButton_close_COM.setObjectName("pushButton_close_COM")
         Debuger_GSM.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(Debuger_GSM)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 668, 18))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 667, 18))
         self.menubar.setObjectName("menubar")
         Debuger_GSM.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(Debuger_GSM)
@@ -364,7 +366,7 @@ class Ui_Debuger_GSM(object):
         self.action.setObjectName("action")
 
         self.retranslateUi(Debuger_GSM)
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Debuger_GSM)
 
     def retranslateUi(self, Debuger_GSM):
