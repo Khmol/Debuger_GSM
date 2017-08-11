@@ -66,16 +66,16 @@ def ReverseBytearray(arr_in):
         arr_out += i
     return arr_out
 
-def Convert_To_User_Num(data, max_num):
+def Convert_To_User_Num(data):
     '''
     :param data: {int} данные для обработки
     :return: {int} - номер абонента если 0 абонент это 10 бит, а 10 абонент - 0 бит
     '''
-    ret_val = max_num
-    for i in range(max_num + 1):
-        if i == data:
-            return ret_val
-        ret_val -= 1
+    return data - 1
+    # for i in range(max_num + 1):
+    #     if i == data:
+    #         return ret_val
+    #     ret_val -= 1
 
 def Convert_Str_to_Bytearray(text_in):
     '''

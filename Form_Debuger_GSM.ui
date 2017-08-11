@@ -98,13 +98,25 @@
       <height>351</height>
      </rect>
     </property>
+    <property name="minimumSize">
+     <size>
+      <width>661</width>
+      <height>351</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>661</width>
+      <height>351</height>
+     </size>
+    </property>
     <property name="font">
      <font>
       <pointsize>10</pointsize>
      </font>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="users">
      <attribute name="title">

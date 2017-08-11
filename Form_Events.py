@@ -87,6 +87,7 @@ class Form_Events(object):
         self.app.ui.lineEdit_Telephone_Number.setEnabled(1)
         self.app.ui.spinBox_sim900_user_timeout.setEnabled(1)
         self.app.ui.label_Max_Time_Talk.setEnabled(1)
+        self.app.ui.pushButton_Write_Users.setEnabled(1)
 
 
     def Disable_Widget_User_Page(self):
@@ -113,6 +114,7 @@ class Form_Events(object):
         '''
         self.app.ui.comboBox_in_number.setEnabled(1)
         self.app.ui.lineEdit_in_alarm_text.setEnabled(1)
+        self.app.ui.pushButton_Write_In.setEnabled(1)
 
 
     def Disable_Widget_In_Page(self):
@@ -143,6 +145,7 @@ class Form_Events(object):
         self.app.ui.comboBox_Reset_Guard.setEnabled(1)
         self.app.ui.lineEdit_sms_Set_Guard_Cmd.setEnabled(1)
         self.app.ui.comboBox_Set_Guard.setEnabled(1)
+        self.app.ui.pushButton_Write_SMS.setEnabled(1)
 
 
     def Disable_Widget_SMS_Page(self):
@@ -182,6 +185,7 @@ class Form_Events(object):
         self.app.ui.lineEdit_dtmf_reset_guard.setEnabled(1)
         self.app.ui.lineEdit_trump_begin.setEnabled(1)
         self.app.ui.lineEdit_trump_end.setEnabled(1)
+        self.app.ui.pushButton_Write_GS.setEnabled(1)
 
 
     def Disable_Widget_General_Page(self):
@@ -227,17 +231,14 @@ class Form_Events(object):
         self.app.ui.pushButton_close_COM.setEnabled(1)
         #вкладка "Пользователи"
         self.app.ui.pushButton_Read_Users.setEnabled(1)
-        self.app.ui.pushButton_Write_Users.setEnabled(1)
         self.app.ui.list_users_nom.setEnabled(1)
         #вкладка "СМС"
         self.app.ui.pushButton_Read_SMS.setEnabled(1)
-        self.app.ui.pushButton_Write_SMS.setEnabled(1)
         #вкладка "Общие настройки"
         self.app.ui.pushButton_Read_GS.setEnabled(1)
-        self.app.ui.pushButton_Write_GS.setEnabled(1)
-
+        #вкладка "Входы"
         self.app.ui.pushButton_Read_In.setEnabled(1)
-        self.app.ui.pushButton_Write_In.setEnabled(1)
+
         return True
 
 
